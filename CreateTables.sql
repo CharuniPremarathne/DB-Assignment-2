@@ -11,12 +11,13 @@ create type candidateType as enum ('existing employee', 'new candidate')
 create type scoreType as enum('0', '1', '2', '3', '4', '5')
 
 create type feedbackType as (
-	score scoretype,
+	score int,
 	expectedCompetencyLevel int,
 	comment text
 )
 
 drop type feedbackType
+
 
 
 ---tables
