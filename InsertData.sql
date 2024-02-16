@@ -65,12 +65,12 @@ values
 (4, 1, true),
 (5, 2, true)
 
-insert into feedback(interview_id, interviewer_id, decisiononhire, overallrating)
+insert into feedback(interview_id, interviewer_id, decisiononhire, overallrating, feedbackdate,educational_background, relevant_experience, architecture_systems_design, software_development, conceptual_understanding, analytical_problem_solving_skills, teamwork, leadership, growth_potential_achievements, communication_skills)
 values
-(1,1,true, 5),
-(2, 1, false, 2),
-(1,	2, true, 4),
-(2, 2, true, 4)
+(1,1,true, 40,'2023-03-31', row(4, null, null),row(4, null, null),row(4, null, null),row(4, null, null),row(4, null, null),row(4, null, null),row(4, null, null),row(4, null, null),row(4, null, null),row(4, null, null)),
+(2, 1, false, 10,'2023-02-28', row(1, null, null),row(1, null, null),row(1, null, null),row(1, null, null),row(1, null, null),row(1, null, null),row(1, null, null),row(1, null, null),row(1, null, null),row(1, null, null)),
+(1,	2, true, 30,'2023-03-31', row(3, null, null),row(3, null, null),row(3, null, null),row(3, null, null),row(3, null, null),row(3, null, null),row(3, null, null),row(3, null, null),row(3, null, null),row(3, null, null)),
+(2, 2, true, 40,'2023-02-28', row(4, null, null),row(4, null, null),row(4, null, null),row(4, null, null),row(4, null, null),row(4, null, null),row(4, null, null),row(4, null, null),row(4, null, null),row(4, null, null))
 
 
 
