@@ -69,9 +69,18 @@ where c.candidate_id = i.interview_id and i.date <= current_date
 
 --11. Retrieve the average rating given to each candidate across all interviews.
 
+select * from interview i 
+
+select i.candidate_id , avg(overallrating) 
+from interview i , feedback f 
+where i.interview_id = f.interview_id 
+group by i.candidate_id 
 
 --12. Display the details of all candidates who have received a rating of 5 in any interview.
-
+--
+select i.candidate_id 
+from interview i , feedback f 
+where i.interview_id = f.interview_id and f.(educational_background).score = 5
 
 --13. List all interviewers along with the count of interviews they have conducted.
 
@@ -90,20 +99,33 @@ where i.date = '2023-03-31'
 
 --15. Display the average rating given to candidates for interviews conducted by each interviewer.
 
+select f.interviewer_id , avg(overallrating)
+from feedback f 
+group by f.interviewer_id 
 
 --16. List all candidates who have attended interviews for more than one project.
-select 
-from 
+select i.candidate_id 
+from interview i 
+group by i.candidate_id 
+having count(i.interview_id)>1 
 
 --17. Retrieve the details of all interviews where the candidate was rejected.
 
-
+select f.interview_id 
+from feedback f 
+where f.decisiononhire = false 
 
 --18. Display the details of all candidates who have received the highest rating in any interview.
-
+--
+select i.candidate_id 
+from feedback f , interview i 
+where i.interview_id = f.interview_id and f.(educational_background).score = 5
 
 --19. List all candidates who have received an average rating above a certain threshold.
-
+--
+select i.candidate_id 
+from feedback f , interview i 
+where f.interview_id = i.interview_id and f.overallrating > 35
 
 --20. Retrieve the details of all interviews conducted for a specific candidate.
 
