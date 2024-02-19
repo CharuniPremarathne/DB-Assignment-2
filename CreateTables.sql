@@ -97,6 +97,20 @@ create table Feedback(
 
 drop table feedback
 
+create table Feedback (
+    interview_ID int not null,
+    interviewer_ID int not null,
+    feedback_id SERIAL primary key,
+    decisionOnHire bool not null,
+    overallRating int not null,
+    feedBackDate Date not null,
+    details JSONB not null,
+    
+    constraint fk_feedback_interview foreign key(interview_ID) references interview (interview_ID),
+    constraint fk_feedback_interviewer foreign key(interviewer_ID) references interviewer (interviewer_ID)
+);
+
+
 create table candidate(
 	candidate_ID SERIAL primary key,
 	candidateName nameType,
