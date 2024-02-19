@@ -5,8 +5,8 @@ where p.project_id  = v.project_id and v.jobref_id  = j.jobref_id
 
 --2. List all candidates who have applied for any open position.
 select *
-from candidate c 
-where appliedstatus = true 
+from candidate c , candidatevacancy cv
+where cv.appliedstatus = true and c.candidate_id = cv.candidate_id 
 
 --3. Display the details of all projects that currently have open positions.
 select p.project_id , p.projectname 
@@ -15,11 +15,11 @@ where p.project_id = v.project_id
 
 --4. Retrieve the list of all candidates who have not yet applied for any open position.
 select *
-from candidate c 
-where appliedstatus = false 
+from candidate c , candidatevacancy cv
+where cv.appliedstatus = false and c.candidate_id = cv.candidate_id 
 
 --5. List all projects along with the count of open positions for each project.
-select v.project_id ,count(*) 
+select v.project_id ,count(*) as "open positions"
 from vacancy v
 group by v.project_id 
 
@@ -27,10 +27,11 @@ group by v.project_id
 select * from candidate
 select * from interview i 
 
-select i.candidate_id
+select i.candidate_id, c.candidatename  
 from interview i , candidate c 
-group by i.candidate_id 
-having count(i.candidate_id)>1
+where i.candidate_id = c.candidate_id
+group by i.candidate_id, c.candidatename  
+having count(i.vacancy_id)>1
 
 --7. List all projects along with the total number of candidates who have applied for open 
 --positions in each project.
@@ -49,13 +50,13 @@ group by p.project_id
 select * from project p
 select * from interview i 
 
-select i.project_id, count(*) 
+select i.project_id, count(*) as "interview count"
 from interview i 
 group by i.project_id 
 
 --9. Display the count of interviews conducted for each project.
 
-select i.project_id , count(*) 
+select i.project_id , count(*) as "interviews conducted"
 from interview i 
 where i.date <= current_date
 group by i.project_id 
@@ -65,7 +66,8 @@ group by i.project_id
 
 select c.candidate_id ,c.candidatename, c.profilelink, c.employeeid , c."type" 
 from candidate c , interview i 
-where c.candidate_id = i.interview_id and i.date <= current_date
+where c.candidate_id = i.candidate_id  and i.date <= current_date
+
 
 --11. Retrieve the average rating given to each candidate across all interviews.
 
@@ -77,10 +79,12 @@ where i.interview_id = f.interview_id
 group by i.candidate_id 
 
 --12. Display the details of all candidates who have received a rating of 5 in any interview.
---
+
+select * from feedback f 
+
 select i.candidate_id 
-from interview i , feedback f 
-where i.interview_id = f.interview_id and f.(educational_background).score = 5
+from interview i, feedback f 
+where i.interview_id = f.interview_id and f.overallrating = 5
 
 --13. List all interviewers along with the count of interviews they have conducted.
 
@@ -95,7 +99,7 @@ group by ci.interviewer_id
 
 select *
 from interview i 
-where i.date = '2023-03-31'
+where i.date = '2024-02-15'
 
 --15. Display the average rating given to candidates for interviews conducted by each interviewer.
 
@@ -119,13 +123,13 @@ where f.decisiononhire = false
 --
 select i.candidate_id 
 from feedback f , interview i 
-where i.interview_id = f.interview_id and f.(educational_background).score = 5
+where i.interview_id = f.interview_id and f.overallrating = 5
 
 --19. List all candidates who have received an average rating above a certain threshold.
 --
 select i.candidate_id 
 from feedback f , interview i 
-where f.interview_id = i.interview_id and f.overallrating > 35
+where f.interview_id = i.interview_id and f.overallrating > 3
 
 --20. Retrieve the details of all interviews conducted for a specific candidate.
 
@@ -133,8 +137,15 @@ select * from interview i
 
 select *
 from interview i 
-where i.candidate_id = 1
+where i.candidate_id = 9
 
 --21. Write a query to retrieve all candidates who got a rating of 4 and passed the interview 
 --after being interviewed by a particular interviewer (say “Nuwan”) within last 3 months.
+
+select * from feedback f 
+select * from interview
+
+select c.candidate_id , c.candidatename 
+from feedback f , interview i , candidate c 
+where f.interview_id = i.interview_id and i.candidate_id = c.candidate_id and f.interviewer_id = 1 and f.overallrating = 4 and f.decisiononhire = true and i.date < current_date - interval '3 months'; 
 
